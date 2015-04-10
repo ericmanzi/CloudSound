@@ -1,0 +1,318 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="com.tangible.cloudsound.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/rlBoxes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#aabdf0"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <TextView
+            android:id="@+id/spaceRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/listenbtn"
+            android:layout_alignBottom="@+id/listenbtn"
+            android:layout_alignParentRight="true"
+            android:background="#00FFFFFF"
+            android:radius="2dp"
+            android:text="   Record   "
+            android:textColor="#00747675"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/listenbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#00FFFFFF"
+            android:radius="2dp"
+            android:text="   Listen   "
+            android:textColor="#00747675"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/square1"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square9"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/spaceRight"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="49dp"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square13"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/listenbtn"
+            android:layout_below="@+id/square1"
+            android:layout_marginTop="99dp"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick"
+             />
+
+        <Button
+            android:id="@+id/square4"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/square5"
+            android:layout_marginBottom="15dp"
+            android:layout_toLeftOf="@+id/square5"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square2"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/square4"
+            android:layout_marginRight="48dp"
+            android:layout_toLeftOf="@+id/square3"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square5"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBaseline="@+id/square13"
+            android:layout_alignBottom="@+id/square13"
+            android:layout_alignRight="@+id/spaceRight"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square6"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/square5"
+            android:layout_marginTop="18dp"
+            android:layout_toLeftOf="@+id/square5"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square8"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/square2"
+            android:layout_below="@+id/square6"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square10"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/square16"
+            android:layout_below="@+id/square6"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square11"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/square15"
+            android:layout_alignTop="@+id/square7"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square12"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignTop="@+id/square6"
+            android:layout_toRightOf="@+id/square13"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square7"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBottom="@+id/square8"
+            android:layout_alignLeft="@+id/square3"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square14"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/square12"
+            android:layout_below="@+id/square16"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square16"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBaseline="@+id/square2"
+            android:layout_alignBottom="@+id/square2"
+            android:layout_marginLeft="52dp"
+            android:layout_toRightOf="@+id/square15"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square15"
+            style="?android:attr/buttonStyleSmall"
+			android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBaseline="@+id/square3"
+            android:layout_alignBottom="@+id/square3"
+            android:layout_marginLeft="47dp"
+            android:layout_toRightOf="@+id/square14"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+
+        <Button
+            android:id="@+id/square3"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignTop="@+id/square2"
+            android:layout_marginRight="47dp"
+            android:layout_marginTop="22dp"
+            android:layout_toLeftOf="@+id/square4"
+            android:background="@drawable/cloud_shape"
+            android:onClick="onBoxClick" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frameCoverBoxes"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#70000000"
+        android:visibility="visible" >
+        
+    </FrameLayout>
+        
+        
+    
+    <FrameLayout
+        android:id="@+id/frame3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="70dp" >
+
+        <TextView
+            android:id="@+id/lookup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#70000000"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame2"
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:layout_gravity="bottom" >
+
+        <ViewSwitcher
+            android:id="@+id/switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="60dp"
+            android:scaleType="fitCenter" >
+
+            <Button
+                android:id="@+id/recordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:onClick="showPickAny"
+                android:text="    Record    "
+                android:textColor="#747675"
+                android:textSize="20sp"
+                 />
+
+            <Button
+                android:id="@+id/doneRecording"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:onClick="doneRecording"
+                android:text="     DONE     "
+                android:textColor="#747675"
+                android:textSize="20sp" />
+        </ViewSwitcher>
+
+        <Button
+            android:id="@+id/listenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="60dp"
+            android:background="#FFFFFF"
+            android:onClick="showPickInflated"
+            android:scaleType="fitCenter"
+            android:text="   Listen   "
+            android:textColor="#747675"
+            android:textSize="20sp" />
+
+        <Chronometer
+            android:id="@+id/chronometer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:visibility="invisible"
+            android:textSize="50sp" />
+        
+        <ProgressBar
+            android:id="@+id/progress" 
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:paddingLeft="100dp"
+            android:visibility="gone"
+            android:layout_marginRight="5dp" />
+        
+    </FrameLayout>
+
+</FrameLayout>
