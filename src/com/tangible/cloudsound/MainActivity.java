@@ -3,12 +3,12 @@ package com.tangible.cloudsound;
 import java.io.File;
 import java.io.IOException;
 
-import android.app.Activity;
-import android.graphics.AvoidXfermode.Mode;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -27,14 +27,24 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import at.abraxas.amarino.Amarino;
+import at.abraxas.amarino.AmarinoIntent;
 
 public class MainActivity extends ActionBarActivity {
+	
+	private ArduinoReceiver arduinoReceiver = new ArduinoReceiver();
+	private static final String DEVICE_ADDRESS =  "00:06:66:03:73:7B"; //"00:06:66:03:73:7B";
+
+	private final int INFLATE = 1;
+	private final int DEFLATE = 2;
+	private final int VIBRATE = 3;
+	
+	
 	
 	//recording/playing sound
 	private MediaRecorder mRecorder;
@@ -63,6 +73,8 @@ public class MainActivity extends ActionBarActivity {
 	
 	private int numSaved=0;
 	
+	private View currentRecordingSquare;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 //		getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -70,6 +82,9 @@ public class MainActivity extends ActionBarActivity {
 //		actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#330000ff")));
 //		actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#550000ff")));
 //		
+		
+		
+		
 		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		super.onCreate(savedInstanceState);
 		
@@ -96,6 +111,29 @@ public class MainActivity extends ActionBarActivity {
 		robotoMedium = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
 		mode = NEUTRAL;
 	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// in order to receive broadcasted intents we need to register our receiver
+		registerReceiver(arduinoReceiver, new IntentFilter(AmarinoIntent.ACTION_RECEIVED));
+		
+		// this is how you tell Amarino to connect to a specific BT device from within your own code
+		Amarino.connect(this, DEVICE_ADDRESS);
+	}
+
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		// if you connect in onStart() you must not forget to disconnect when your app is closed
+		Amarino.disconnect(this, DEVICE_ADDRESS);
+		
+		// do never forget to unregister a registered receiver
+		unregisterReceiver(arduinoReceiver);
+	}
+	
 	
 
 
@@ -130,8 +168,9 @@ public class MainActivity extends ActionBarActivity {
 		}
 	} 
 	
-	public void play(String square) {
+	public void play(String square, View v) {
 		if (!playing) {
+			final View vTemp = v;
 			final String squareTemp = square;
 			try {
 				mPlayer = new MediaPlayer();
@@ -139,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
 				mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer mPlayer) {
-						donePlaying();
+						donePlaying(vTemp);
 						File file = new File(fileName+"/"+squareTemp+".3gp");
 						boolean deleted = file.delete();
 						bar.setVisibility(View.GONE);
@@ -217,12 +256,38 @@ public class MainActivity extends ActionBarActivity {
 		recordButton.setVisibility(View.GONE);
 	}
 
+	private char convertNameToFlag(String name) {
+		if (name.equals("square1")) return 'A';
+		if (name.equals("square2")) return 'B';
+		if (name.equals("square3")) return 'C';
+		if (name.equals("square4")) return 'D';
+		if (name.equals("square5")) return 'E';
+		if (name.equals("square6")) return 'F';
+		if (name.equals("square7")) return 'G';
+		if (name.equals("square8")) return 'H';
+		if (name.equals("square9")) return 'I';
+		if (name.equals("square10")) return 'J';
+		if (name.equals("square11")) return 'K';
+		if (name.equals("square12")) return 'L';
+		if (name.equals("square13")) return 'M';
+		if (name.equals("square14")) return 'N';
+		if (name.equals("square15")) return 'O';
+		else return 'P'; //if (name.equals("square16"))  
+		
+	}
+	
 	public void onBoxClick(View v) {
 		String name = v.getResources().getResourceName(v.getId()).split("/")[1];
 		if (mode==LISTENING) {
 			//start playing
 			if (v.getTag(v.getId())!=null && v.getTag(v.getId()).toString()=="something") { //if audio saved here
 				// SEND BLINKING CODE
+				
+				Amarino.sendDataToArduino(this, DEVICE_ADDRESS, convertNameToFlag(name), VIBRATE);
+				Log.i("AMARINO", "sent VIBRATE to "+name+" at "+convertNameToFlag(name));
+
+				
+				
 				lookup.setVisibility(View.VISIBLE);
 				lookup.setText("\nPlaying...\nLook up at balloon\n");
 				frame.setBackgroundColor(Color.parseColor("#70000000"));
@@ -239,7 +304,7 @@ public class MainActivity extends ActionBarActivity {
 //				v.setLayoutParams(parms);
 				v.setTag(v.getId(), "nothing");//false if no audio saved here
 				//play the audio
-				play(name);
+				play(name, v);
 				mode=NEUTRAL;
 			} else {
 				Toast.makeText(this, "Nothing stored here", Toast.LENGTH_SHORT).show();
@@ -247,6 +312,9 @@ public class MainActivity extends ActionBarActivity {
 			
 		} else if (mode==RECORDING) { //start recording
 			// SEND BLINKING CODE
+			Amarino.sendDataToArduino(this, DEVICE_ADDRESS, convertNameToFlag(name), VIBRATE);
+			Log.i("AMARINO", "sent VIBRATE to "+name+" at "+convertNameToFlag(name));
+			currentRecordingSquare=v;
 			lookup.setVisibility(View.VISIBLE);
 			lookup.setText("\nRecording...\nLook up at balloon\n");
 			frame.setBackgroundColor(Color.parseColor("#70000000"));
@@ -273,8 +341,16 @@ public class MainActivity extends ActionBarActivity {
 		
 	}
 	
+	
+	
 	public void doneRecording(View v) {
+		
 		//SEND INFLATE CODE
+		String name = currentRecordingSquare.getResources().getResourceName(currentRecordingSquare.getId()).split("/")[1];
+
+		Amarino.sendDataToArduino(this, DEVICE_ADDRESS, convertNameToFlag(name), INFLATE);
+		Log.i("AMARINO", "sent INFLATE to "+name+" at "+convertNameToFlag(name));
+
 		
 		chronos.stop();
 		flCoverBoxes.setVisibility(View.VISIBLE);
@@ -296,8 +372,12 @@ public class MainActivity extends ActionBarActivity {
 		listenButton.setEnabled(numSaved>0);
 	}
 	
-	public void donePlaying() {
+	public void donePlaying(View v) {
 		//SEND DEFLATE CODE
+		String name = v.getResources().getResourceName(v.getId()).split("/")[1];
+
+		Amarino.sendDataToArduino(this, DEVICE_ADDRESS, convertNameToFlag(name), DEFLATE);
+		Log.i("AMARINO", "sent DEFLATE to "+name+" at "+convertNameToFlag(name));
 		chronos.stop();
 		lookup.setVisibility(View.INVISIBLE);
 		chronos.setVisibility(View.INVISIBLE);
@@ -319,6 +399,40 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 	
+	
+    
+	
+
+	/**
+	 * ArduinoReceiver is responsible for catching broadcasted Amarino
+	 * events.
+	 * 
+	 * It extracts data from the intent and updates the graph accordingly.
+	 */
+	public class ArduinoReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String data = null;
+			
+			// the device address from which the data was sent, we don't need it here but to demonstrate how you retrieve it
+			final String address = intent.getStringExtra(AmarinoIntent.EXTRA_DEVICE_ADDRESS);
+			
+			// the type of data which is added to the intent
+			final int dataType = intent.getIntExtra(AmarinoIntent.EXTRA_DATA_TYPE, -1);
+			
+			// we only expect String data though, but it is better to check if really string was sent
+			// later Amarino will support differnt data types, so far data comes always as string and
+			// you have to parse the data to the type you have sent from Arduino, like it is shown below
+			if (dataType == AmarinoIntent.STRING_EXTRA){
+				data = intent.getStringExtra(AmarinoIntent.EXTRA_DATA);
+				
+				if (data != null){
+					// Not receiving anything
+				}
+			}
+		}
+	}
 	
 	
 }
