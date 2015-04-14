@@ -38,7 +38,7 @@ import at.abraxas.amarino.AmarinoIntent;
 public class MainActivity extends ActionBarActivity {
 	
 	private ArduinoReceiver arduinoReceiver = new ArduinoReceiver();
-	private static final String DEVICE_ADDRESS =  "00:06:66:03:73:7B"; //"00:06:66:03:73:7B";
+	private static final String DEVICE_ADDRESS =  "00:06:66:04:29:33"; //"00:06:66:03:73:7B";
 
 	private final int INFLATE = 1;
 	private final int DEFLATE = 2;
